@@ -3,3 +3,6 @@ contact_links:
   - name: Some link
     url: https://github.com/orgs/community/discussions
     about: Please ask and answer questions here.
+  - name: Create an issue without template
+    url: https://github.com/ov7a/issue-management-test/issues/new
+    about: This option available only for repository maintainers
