@@ -49,7 +49,7 @@ body:
     validations:
       required: true  
   - type: input
-    id: gradle-version
+    id: gradle-old-version
     attributes:
       label: Gradle version that used to work
       description: What version of Gradle gives proper result for your case?
