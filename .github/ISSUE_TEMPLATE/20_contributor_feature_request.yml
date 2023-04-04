@@ -1,6 +1,5 @@
 name: Feature request
 description: Suggest an idea for this project
-title: ''
 labels: ["a:feature", "to-triage"]
 assignees: []
 body:
@@ -19,7 +18,6 @@ body:
     attributes:
       label: Expected Behavior
       description: Tell us how it should work
-      value: ""
     validations:
       required: true
   - type: textarea
@@ -27,7 +25,6 @@ body:
     attributes:
       label: Current Behavior (optional)
       description: Explain the difference from current behavior
-      value: ""
     validations:
       required: false    
   - type: textarea
@@ -37,6 +34,5 @@ body:
       description: |
         How has this issue affected you? What are you trying to accomplish? What other alternatives have you considered?
 Providing context helps us come up with a solution that is most useful in the real world 
-    value: ""
     validations:
       required: true
