@@ -9,6 +9,8 @@ body:
         Please follow the instructions below. 
         We receive dozens of issues every week, so to stay productive, we will close issues that don't provide enough information. 
 
+        If you need help with Gradle or have a usage question, please reach [our community](http://help.gradle.org/) instead of creating an issue.
+
         Please open Android-related issues on [the Android Issue Tracker](https://source.android.com/source/report-bugs)
         Please open IntelliJ-related issues on [the JetBrains Issue Tracker](https://youtrack.jetbrains.com/newIssue?project=IDEA)
         Please open Gradle Native-related issues on [the Gradle Native repository](https://github.com/gradle/gradle-native/issues)
