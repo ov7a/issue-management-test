@@ -7,6 +7,8 @@ body:
     attributes:
       value: |
         Please search related information in our [latest documentation](https://docs.gradle.org/current/userguide/userguide.html) before opening a documentation issue.
+        If you need help with Gradle or have a usage question, please reach [our community](http://help.gradle.org/) instead of creating an issue.
+
   - type: dropdown
     id: issue-type
     attributes:
