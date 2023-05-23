@@ -10,9 +10,6 @@ jobs:
     permissions:
       issues: write
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-
       - name: add label for issue without labels
         uses: actions-ecosystem/action-add-labels@v1
         if: ${{ github.event.issue.labels[0] == null }}

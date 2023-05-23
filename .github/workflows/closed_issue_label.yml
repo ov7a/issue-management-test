@@ -10,9 +10,6 @@ jobs:
     permissions:
       issues: write
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-
       - name: remove label for closed issue
         uses: actions-ecosystem/action-remove-labels@v1
         if: ${{ github.event.issue.state_reason == 'not_planned' }}
@@ -24,9 +21,6 @@ jobs:
     permissions:
       issues: write
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-
       - name: add label for issue without labels
         uses: actions-ecosystem/action-add-labels@v1
         if: ${{ github.event.issue.state_reason == 'completed' && github.event.issue.milestone == null }}
