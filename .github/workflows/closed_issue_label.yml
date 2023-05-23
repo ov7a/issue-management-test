@@ -5,7 +5,7 @@ on:
     types: closed
 
 jobs:
-  add_label:
+  remove_triage_label:
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -18,3 +18,17 @@ jobs:
         if: ${{ github.event.issue.state_reason == 'not_planned' }}
         with:
           labels: triage
+
+  add_triage_label:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: add label for issue without labels
+        uses: actions-ecosystem/action-add-labels@v1
+        if: ${{ github.event.issue.state_reason == 'completed' && github.event.issue.milestone == null }}
+        with:
+          labels: triage        
