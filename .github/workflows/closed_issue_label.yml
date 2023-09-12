@@ -1,4 +1,4 @@
-name: Remove triage label
+name: Closed issue labels
 
 on:
   issues:
@@ -14,15 +14,15 @@ jobs:
         uses: actions-ecosystem/action-remove-labels@v1
         if: ${{ github.event.issue.state_reason == 'not_planned' }}
         with:
-          labels: triage
+          labels: to-triage
 
   add_triage_label:
     runs-on: ubuntu-latest
     permissions:
       issues: write
     steps:
-      - name: add label for issue without labels
+      - name: add label for issue without milestone
         uses: actions-ecosystem/action-add-labels@v1
         if: ${{ github.event.issue.state_reason == 'completed' && github.event.issue.milestone == null }}
         with:
-          labels: triage        
+          labels: to-triage
