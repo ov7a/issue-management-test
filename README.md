@@ -1,5 +1,5 @@
 # issue-management-test
-a repository for issue management experiments
+a repository for issue management and other GitHub experiments
 
 Purpose: forbid creating issues without labels
 
