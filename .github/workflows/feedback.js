@@ -96,5 +96,5 @@ module.exports = async ({github, context}) => {
     issuesResult.repository.issues.nodes.forEach(issue => maybeClose(issue, issuesCutoff, issueLabels, closeIssueMutation));
 
     const pullsResult = await github.graphql(pullsQuery, queryParams(context, pullsLabels));
-    pullsResult.repository.pullRequests.nodes.forEach(pullRequest => maybeClose(pullRequest, pullsCutoff, pullsLabels, closePullRequestMutation));
+    pullsResult.repository.pullRequests.nodes.forEach(pullRequest => maybeClose(pullRequest, pullsCutoff, pullsLabels, closePullMutation));
 }
