@@ -1,0 +1,20 @@
+name: Feedback
+
+on:
+  schedule:
+    - cron: '0 * * * *' # every hour
+  workflow_dispatch:
+
+jobs:
+  close_items_without_feedback:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/github-script@v7
+      with:
+        script: |
+          const script = require('./.github/workflows/feedback.js')
+          await script({github, context})

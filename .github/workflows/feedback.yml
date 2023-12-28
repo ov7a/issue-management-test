@@ -1,0 +1,36 @@
+name: Feedback
+
+on:
+  issues:
+    types:
+    - edited
+    - reopened
+  issue_comment:
+    types:
+    - created
+  pull_request_review_comment:
+    types:
+      - created
+  pull_request_target:
+    types:
+    - edited
+    - synchronize
+    - converted_to_draft
+    - ready_for_review
+    - review_requested
+
+jobs:
+  remove_pending_labels:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: remove pending labels for updated item
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: |
+            pending:reproducer
+            pending:feedback
+            pending:dco
+            pending:design
