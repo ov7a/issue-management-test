@@ -27,8 +27,12 @@ jobs:
       pull-requests: write
     steps:
       - name: remove pending labels for updated item
+        #TODO: when two labels are added sequentially, both are removed
+        #TODO: when a comment is added and a label is added, the label is removed because of comment update event
         uses: actions-ecosystem/action-remove-labels@v1
+        if: ${{ github.event.issue.labels[0] == null }}
         with:
+          fail_on_error: false
           labels: |
             pending:reproducer
             pending:feedback
