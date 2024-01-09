@@ -32,8 +32,19 @@ const issuesQuery = `query($owner:String!, $name:String!, $labels: [String!]) {
       issues(last:100, labels: $labels){
         nodes {
           id, number, updatedAt
-          labels(first:100) {
+          labels(first: 100) {
             nodes { id, name }
+          }
+          timelineItems(last: 100, itemTypes: [LABELED_EVENT, CLOSED_EVENT, ISSUE_COMMENT, RENAMED_TITLE_EVENT]) {
+            nodes {
+              __typename
+              ... on LabeledEvent {
+                createdAt
+                label {
+                  name
+                }
+              }
+            }
           }
         }
       }
@@ -45,8 +56,23 @@ const pullsQuery = `query($owner:String!, $name:String!, $labels: [String!]) {
       pullRequests(last:100, labels: $labels){
         nodes {
           id, number, updatedAt
-          labels(first:100) {
+          labels(first: 100) {
             nodes { id, name }
+          }
+          timelineItems(last: 100, itemTypes: [
+            LABELED_EVENT, BASE_REF_CHANGED_EVENT, CLOSED_EVENT, ISSUE_COMMENT, RENAMED_TITLE_EVENT,
+            PULL_REQUEST_COMMIT, PULL_REQUEST_COMMIT_COMMENT_THREAD, PULL_REQUEST_REVIEW_THREAD,
+            PULL_REQUEST_REVIEW, PULL_REQUEST_REVISION_MARKER, READY_FOR_REVIEW_EVENT, REVIEW_REQUESTED_EVENT
+          ]) {
+            nodes {
+              __typename
+              ... on LabeledEvent {
+                createdAt
+                label {
+                  name
+                }
+              }
+            }
           }
         }
       }
@@ -59,10 +85,13 @@ const commentMutationPart = `
   }
 `;
 
-const labelMutationPart = `
+const addLabelsMutationPart = `
   addLabelsToLabelable(input: {labelableId: $itemId, labelIds: [$closeLabelId]}){
     clientMutationId
   }
+`;
+
+const removeLabelsMutationPart = `
   removeLabelsFromLabelable(input: {labelableId: $itemId, labelIds: $labelIds}){
     clientMutationId
   }
@@ -73,7 +102,8 @@ const closeIssueMutation = `mutation ($itemId: ID!, $body: String!, $labelIds: [
   closeIssue(input: {issueId: $itemId, stateReason: NOT_PLANNED}) {
     clientMutationId
   }
-  ${labelMutationPart}
+  ${addLabelsMutationPart}
+  ${removeLabelsMutationPart}
 }`;
 
 const closePullMutation = `mutation ($itemId: ID!, $body: String!, $labelIds: [ID!]!, $closeLabelId: ID!) {
@@ -81,15 +111,39 @@ const closePullMutation = `mutation ($itemId: ID!, $body: String!, $labelIds: [I
   closePullRequest(input: {pullRequestId: $itemId}) {
     clientMutationId
   }
-  ${labelMutationPart}
+  ${addLabelsMutationPart}
+  ${removeLabelsMutationPart}
 }`;
+
+const removeLabelsMutation = `mutation ($itemId: ID!, $labelIds: [ID!]!) {
+   ${removeLabelsMutationPart}
+ }`;
 
 function queryParams(context, feedbackLabels){
     return {owner: context.repo.owner, name: context.repo.repo, labels: Array.from(feedbackLabels.keys())}
 }
 
-async function maybeClose(github, closedLabelsIds, item, cutoff, feedbackLabels, closeMutation) {
-    if (new Date(item.updatedAt) < cutoff) {
+function wasUpdatedAfterLabeling(events) {
+  var hasUpdateEvent = false;
+  for (let i = events.length - 1; i >= 0; i--) {
+    if (events[i].__typename != "LabeledEvent"){
+      hasUpdateEvent = true;
+    } else if (events[i].label.name.startsWith("pending:")){
+      break;
+    }
+  }
+  return hasUpdateEvent;
+}
+
+async function process(github, closedLabelsIds, item, cutoff, feedbackLabels, closeMutation) {
+    if (wasUpdatedAfterLabeling(item.timelineItems.nodes)){
+        await github.graphql(removeLabelsMutation, {
+            itemId: item.id,
+            labelIds: item.labels.nodes.filter(label => feedbackLabels.has(label.name)).map(label => label.id)
+        });
+
+        console.log(`Removed labels on ${item.number} because it was updated after labeled.`);
+    } else if (new Date(item.updatedAt) < cutoff) {
         const mainLabel = item.labels.nodes.find(label => feedbackLabels.has(label.name));
 
         await github.graphql(closeMutation, {
@@ -121,8 +175,8 @@ module.exports = async ({github, context}) => {
     const closedLabelsIds = await getAllClosedLabelIds(github, context);
 
     const issuesResult = await github.graphql(issuesQuery, queryParams(context, issueLabels));
-    issuesResult.repository.issues.nodes.forEach(issue => maybeClose(github, closedLabelsIds, issue, issuesCutoff, issueLabels, closeIssueMutation));
+    issuesResult.repository.issues.nodes.forEach(issue => process(github, closedLabelsIds, issue, issuesCutoff, issueLabels, closeIssueMutation));
 
     const pullsResult = await github.graphql(pullsQuery, queryParams(context, pullsLabels));
-    pullsResult.repository.pullRequests.nodes.forEach(pullRequest => maybeClose(github, closedLabelsIds, pullRequest, pullsCutoff, pullsLabels, closePullMutation));
+    pullsResult.repository.pullRequests.nodes.forEach(pullRequest => process(github, closedLabelsIds, pullRequest, pullsCutoff, pullsLabels, closePullMutation));
 }
