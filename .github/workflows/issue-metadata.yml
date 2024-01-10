@@ -1,12 +1,11 @@
-name: Feedback
+name: Check issues metadata
 
 on:
-  schedule:
-    - cron: '0 * * * *' # every hour
-  workflow_dispatch:
+  issues:
+    types: [ opened, unlabeled, closed ]
 
 jobs:
-  feedback:
+  check_issue_metadata:
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -14,4 +13,4 @@ jobs:
       - uses: actions/checkout@v3
       - uses: gradle/issue-management-action@b4587f5b41dcad541737b58c87af2400ef49f79b
         with:
-          script: "feedback"
+          script: "issue-metadata"
