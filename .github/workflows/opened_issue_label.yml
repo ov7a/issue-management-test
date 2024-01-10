@@ -2,16 +2,40 @@ name: Opened issue labels
 
 on:
   issues:
-    types: opened
+    types: [ opened, unlabeled ]
 
 jobs:
-  add_label:
+  check_labels:
     runs-on: ubuntu-latest
     permissions:
       issues: write
     steps:
       - name: add label for issue without labels
-        uses: actions-ecosystem/action-add-labels@v1
-        if: ${{ github.event.issue.labels[0] == null }}
+        uses: actions/github-script@v7
         with:
-          labels: to-triage
+          script: |
+            let issueNumber = context.payload.issue.number;
+            let issueResult = await github.graphql(`query($owner:String!, $name:String!, $issue: Int!) {
+              repository(owner:$owner, name:$name){
+                issue(number: $issue) {
+                  state
+                  labels(first: 100) {
+                    nodes { name }
+                  }
+                }
+              }
+            }`, {owner: context.repo.owner, name: context.repo.repo, issue: issueNumber});
+
+            if (issueResult.repository.issue.state != 'OPEN') {
+              return;
+            }
+            
+            let labels = issueResult.repository.issue.labels.nodes.map(label => label.name);
+            if (!(labels.some(x => x.startsWith("in:")) && labels.filter(x => x.startsWith("a:")).length == 1) && !labels.includes('to-triage')) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                labels: ['to-triage']
+              })
+            }
