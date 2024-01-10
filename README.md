@@ -1,7 +1,7 @@
 # issue-management-test
 a repository for issue management and other GitHub experiments
 
-Purpose: forbid creating issues without labels
+Purpose: forbid creating issues without labels and test some other stuff related to issue management
 
 1. md templates - doesn't work
 2. md templates + config - doesn't work
