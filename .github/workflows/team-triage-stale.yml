@@ -16,13 +16,13 @@ jobs:
           operations-per-run: 50
 
           only-issue-labels: ':wave: team-triage'
-          days-before-issue-stale: 14
+          days-before-issue-stale: 1 # FIXME: temorary for test
           stale-issue-label: to-triage
           stale-issue-message: ""
           days-before-issue-close: -1
 
           only-pr-labels: 'from:contributor'
-          days-before-pr-stale: 30
+          days-before-pr-stale: 2  # FIXME: temorary for test
           stale-pr-label: to-triage
           stale-pr-message: ""
           days-before-pr-close: -1
