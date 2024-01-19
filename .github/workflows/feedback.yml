@@ -11,7 +11,6 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: gradle/issue-management-action@719e37ef2bd9bfb42065115b78f3f94d72642808
+      - uses: gradle/issue-management-action@v1
         with:
           script: "feedback"

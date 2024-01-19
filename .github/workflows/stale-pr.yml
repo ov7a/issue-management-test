@@ -37,12 +37,7 @@ jobs:
           stale-pr-label: stale
           stale-pr-message: >
             This pull request has been automatically marked as stale because it has not had recent activity.
-            Given the limited bandwidth of the team, it will be closed if no further activity occurs.
-            If you intend to work on this pull request, please ask the team to reopen the PR or push a new PR.
-            Thank you for your contributions.
+            It will be closed in X days if no further activity occurs.
           days-before-pr-close: 1 # FIXME: temorary for test
           close-pr-message: >
             This pull request has been automatically closed due to inactivity.
-            If you are still interested in contributing this, please ensure that
-            it is rebased against the latest branch (usually `master`), all review
-            comments have been addressed and the build is passing.
