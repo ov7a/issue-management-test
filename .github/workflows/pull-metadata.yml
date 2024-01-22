@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
+      pull-requests: write
     steps:
-      - uses: gradle/issue-management-action@v1
+      - uses: gradle/issue-management-action@1cdf9ad6b0aa7b6fd9c2cbe56f9ce3450f219aec
         with:
           script: "pull-metadata"
