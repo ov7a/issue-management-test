@@ -10,6 +10,5 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: gradle/issue-management-action@v1
-        with:
-          script: "issue-metadata"
+      - uses: gradle/issue-management-action/issue-metadata@v2
+
