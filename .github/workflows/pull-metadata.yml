@@ -11,6 +11,4 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: gradle/issue-management-action@2ee5ee80b869742a05393ac22375863cd3e61245
-        with:
-          script: "pull-metadata"
+      - uses: gradle/issue-management-action/pull-metadata@v2
