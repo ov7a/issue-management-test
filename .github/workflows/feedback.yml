@@ -12,6 +12,4 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: gradle/issue-management-action@v1
-        with:
-          script: "feedback"
+      - uses: gradle/issue-management-action/feedback@v2
