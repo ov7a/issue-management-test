@@ -10,5 +10,4 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: gradle/issue-management-action/issue-metadata@ov7a/pending-labels
-      - uses: gradle/issue-management-action/release-notes@dev
+      - uses: gradle/issue-management-action/issue-metadata@5b8ab8f6527b35a3a3a4661eb620ed6993cc7368
