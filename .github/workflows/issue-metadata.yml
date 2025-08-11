@@ -11,4 +11,3 @@ jobs:
       issues: write
     steps:
       - uses: gradle/issue-management-action/issue-metadata@v2
-        if: ${{ github.event.issue.pull_request == null }}
