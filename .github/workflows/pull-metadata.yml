@@ -2,7 +2,7 @@ name: Check pulls metadata
 
 on:
   pull_request_target:
-    types: [ closed, unlabeled ]
+    types: [ closed, unlabeled, milestoned, demilestoned ]
 
 jobs:
   check_pull_metadata:
