@@ -10,4 +10,4 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: gradle/issue-management-action/issue-metadata@303fabbaf7abdf091b4266d44a014198db61cd30
+      - uses: gradle/issue-management-action/issue-metadata@e5338b63fd05ceaf7d69c28d428e276f4148bc93
