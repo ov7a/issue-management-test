@@ -10,4 +10,4 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: gradle/issue-management-action/issue-comment-triage@2bd1d359d3d7573db5a9ef9f9b033f7079e987b3
+      - uses: gradle/issue-management-action/issue-comment-triage@603df5f47db60a977969f0657706955793a6c74f
