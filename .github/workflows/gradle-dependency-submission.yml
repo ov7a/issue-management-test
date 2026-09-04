@@ -1,0 +1,31 @@
+# Throwaway: end-to-end check that gradle/actions reports the Gradle build tool
+# itself as a dependency. Gradle 5.6.4 is vulnerable to GHSA-hhr2-f668-ff2w (< 6.0).
+name: Gradle dependency submission
+
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-submission:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - name: Setup Java
+      uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      with:
+        distribution: temurin
+        java-version: 11
+    - name: Generate and submit dependency graph
+      uses: gradle/actions/dependency-submission@47f910e3ad8be9baad6e32ea8424be475d31d8ad
+      with:
+        gradle-version: '5.6.4'
+        build-root-directory: gradle-sample
