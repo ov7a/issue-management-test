@@ -8,4 +8,7 @@ repositories {
 
 dependencies {
     implementation 'org.apache.commons:commons-lang3:3.9'
+    // Control: a vulnerable dependency with no alert history in this repository, so the
+    // plugin's own manifest produces a fresh alert in the same snapshot as the build tool.
+    implementation 'commons-collections:commons-collections:3.2.1'
 }

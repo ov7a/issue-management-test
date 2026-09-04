@@ -1,5 +1,7 @@
-# Throwaway: end-to-end check that gradle/actions reports the Gradle build tool
-# itself as a dependency. Gradle 5.6.4 is vulnerable to GHSA-hhr2-f668-ff2w (< 6.0).
+# Throwaway: end-to-end check that gradle/actions reports the Gradle build tool itself as a
+# dependency. Gradle 5.2.1 is vulnerable to GHSA-hhr2-f668-ff2w (< 6.0) and
+# GHSA-pprq-4488-wgqx (>= 1.4, < 5.4.0). The version is selected by the wrapper, so the build
+# tool is reported against gradle/wrapper/gradle-wrapper.properties.
 name: Gradle dependency submission
 
 on:
@@ -12,27 +14,6 @@ permissions:
   contents: read
 
 jobs:
-  dependency-submission:
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout sources
-      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-    - name: Setup Java
-      uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
-      with:
-        distribution: temurin
-        java-version: 11
-    - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@a2e692406b8b998567678ac120e7c6992089f183
-      with:
-        gradle-version: '5.2.1'
-        build-root-directory: gradle-sample
-
-  # Same Gradle version, but selected by a wrapper rather than the action: the build tool
-  # should be reported against gradle-wrapper.properties instead of this workflow.
-  # Pinned to the 'direct' build, so this job also acts as a control for the experiment above.
   dependency-submission-wrapper:
     permissions:
       contents: write
