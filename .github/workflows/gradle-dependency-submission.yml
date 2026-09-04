@@ -27,7 +27,7 @@ jobs:
     - name: Generate and submit dependency graph
       uses: gradle/actions/dependency-submission@a2e692406b8b998567678ac120e7c6992089f183
       with:
-        gradle-version: '5.6.4'
+        gradle-version: '5.2.1'
         build-root-directory: gradle-sample
 
   # Same Gradle version, but selected by a wrapper rather than the action: the build tool
