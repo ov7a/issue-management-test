@@ -1,0 +1,4 @@
+# Linguist treats gradle/wrapper/** as vendored, and vendored paths appear to be excluded from
+# Dependabot alerting. Override it to test whether that is why the build tool manifest is ignored.
+gradle-sample-wrapper/gradle/wrapper/** linguist-vendored=false
+gradle-sample-wrapper/gradle/wrapper/** linguist-generated=false
