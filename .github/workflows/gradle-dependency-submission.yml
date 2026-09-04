@@ -29,3 +29,23 @@ jobs:
       with:
         gradle-version: '5.6.4'
         build-root-directory: gradle-sample
+
+  # Same Gradle version, but selected by a wrapper rather than the action: the build tool
+  # should be reported against gradle-wrapper.properties instead of this workflow.
+  # Pinned to the 'direct' build, so this job also acts as a control for the experiment above.
+  dependency-submission-wrapper:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - name: Setup Java
+      uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      with:
+        distribution: temurin
+        java-version: 11
+    - name: Generate and submit dependency graph
+      uses: gradle/actions/dependency-submission@8bb6f89d5c166ea302b7666e25c7f52b8bd599f1
+      with:
+        build-root-directory: gradle-sample-wrapper
